@@ -1,0 +1,18 @@
+.input-field {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content {
+    background-color: rgba(187, 235, 255, 0.5);
+    height: 494px;
+    
+}
+
+
+.textbox {
+    height: 100px;
+    width: 220px
+}

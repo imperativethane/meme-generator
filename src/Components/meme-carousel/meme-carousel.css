@@ -1,0 +1,11 @@
+.meme-carousel-container {
+    width: 260px;
+    overflow: scroll;
+    border: 2px solid #546ECE;
+}
+
+.memes {
+    width: 100%;
+    margin-bottom: 10px;
+
+}

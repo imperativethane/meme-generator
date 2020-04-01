@@ -1,0 +1,30 @@
+.url-container {
+    height: 50px;
+    width: 500px;
+    background-color: rgba(187, 235, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid #546ECE;
+}
+
+#url {
+    width: 250px;
+    font-size: 1rem;
+}
+
+.btn {
+    background-color: #822fb5;
+    font-family: 'Montserrat' sans-serif;
+    border-radius: 0 10px 10px 0;
+    margin: auto;
+    color: #ffffff;
+    border: none;
+    font-size: 1rem;
+    padding: 3px 10px;
+}
+
+.url-button {
+    margin: 0 auto;
+}
+
