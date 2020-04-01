@@ -6,6 +6,7 @@ import { MainUrl } from '../main-url/main-url';
 import { LogIn } from '../login/login';
 import { InputField } from '../input-field/input-field';
 import { Footer } from '../footer/footer'
+import { Imgflip } from '../../util/imgflip';
 
 
 
@@ -14,17 +15,19 @@ export class App extends React.Component {
     super(props);
     this.state = {
       loggedIn: false,
-      memePhotos: [
-        {url: 'https://i.imgflip.com/30b1gx.jpg', id: 1},
-        {url: 'https://i.imgflip.com/1ur9b0.jpg', id: 2},
-        {url: 'https://i.imgflip.com/1g8my4.jpg', id: 3},
-        {url: 'https://i.imgflip.com/1otk96.jpg', id: 4},
-        {url: 'https://i.imgflip.com/24y43o.jpg', id: 5},
-        {url: 'https://i.imgflip.com/22bdq6.jpg', id: 6}
-      ]
+      memePhotos: []
     }
 
     this.displayInfo = this.displayInfo.bind(this)
+  }
+
+  getMemePhotos() {
+      Imgflip.getMemes()
+      .then(memeResults => {
+        this.setState({
+          memePhotos: memeResults
+        })
+      })
   }
   
   displayInfo() {
@@ -35,12 +38,12 @@ export class App extends React.Component {
     }
   }
 
-  
   render() {
     return (
       <div className="App">
         <img alt='imperativethanelogo' className="header"/>
           <div className="main-container">
+            {this.getMemePhotos()}
           <MemeCarousel memePhotos={this.state.memePhotos} />
           <div className="main-meme-container">
             <MainDisplay />
