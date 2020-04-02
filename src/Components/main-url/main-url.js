@@ -9,7 +9,7 @@ export class MainUrl extends React.Component {
         return (
             <div className="url-container">
                 <div className="url-button">
-                    <input id="url" value="https://i.imgflip.com/30b1gx.jpg" readOnly />
+                    <input id="url" value={this.props.memeUrl} readOnly />
                     <button className="btn" data-clipboard-target="#url">
                         Copy URL
                     </button>

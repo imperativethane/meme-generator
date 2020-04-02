@@ -1,5 +1,6 @@
 .main-display-container {
     height: 367px;
+    width: 500px;
     background-color: rgba(187, 235, 255, 0.5);
     display: flex;
     justify-content: center;
@@ -8,6 +9,7 @@
 }
 
 .main-display {
-    height: 100%;
+    width: 100%;
+    object-fit: contain;
 
 }

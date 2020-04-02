@@ -12,6 +12,10 @@
     
 }
 
+.login-header {
+    margin-bottom: 3rem;
+}
+
 .display-info-input {
     margin: 0.25rem 1.25rem 1.25rem;
     width: 206px;
