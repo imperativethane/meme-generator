@@ -10,19 +10,19 @@ export class LogIn extends React.Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
     }
     
-    handleUsernameChange(event) {
-        this.props.onUsernameChange(event.target.value);
+    handleUsernameChange(e) {
+        this.props.onUsernameChange(e.target.value);
     }
 
-    handlePasswordChange(event) {
-        this.props.onPasswordChange(event.target.value);
+    handlePasswordChange(e) {
+        this.props.onPasswordChange(e.target.value);
     }
 
 
   render() {
         return (
             <div className="login">
-                <div className="content">
+                <div className="content-container">
                     <h1 className="login-header">Log In</h1>
                     <p>Username</p>
                     <input type="text" placeholder="Enter your username" className="display-info-input" onChange={this.handleUsernameChange} />

@@ -7,7 +7,7 @@ export class MainDisplay extends React.Component {
   render() {
         return (
             <div className="main-display-container">
-                <img src={this.props.memeUrl} alt="main display" className="main-display" />
+                <img src={this.props.memeUrl} alt={this.props.memeUrl} className="main-display" />
             </div>
 
         )

@@ -8,8 +8,6 @@ import { InputField } from '../input-field/input-field';
 import { Footer } from '../footer/footer'
 import { Imgflip } from '../../util/imgflip';
 
-
-
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -19,51 +17,25 @@ export class App extends React.Component {
       password: '',
       text0: '',
       text1: '',
-      memePhotos: [],
+      memes: [],
       mainMemeUrl: '',
       resetMemeUrl: '',
       mainMemeId: '',
     }
 
-    this.displayInfo = this.displayInfo.bind(this);
-    this.selectMainMeme = this.selectMainMeme.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
+    this.logIn = this.logIn.bind(this);
+    this.changeMainMeme = this.changeMainMeme.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
     this.changePassword = this.changePassword.bind(this);
-    this.logIn = this.logIn.bind(this);
     this.changeTopCaption = this.changeTopCaption.bind(this);
     this.changeBottomCaption = this.changeBottomCaption.bind(this);
-    this.setId = this.setId.bind(this)
+    this.changeId = this.changeId.bind(this);
+    this.changeResetUrl = this.changeResetUrl.bind(this);
+    this.renderMainMeme = this.renderMainMeme.bind(this);
+    this.display = this.display.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
   
-  selectMainMeme(memeUrl) {
-    this.setState({
-      mainMemeUrl: memeUrl,
-    })
-  }
-
-  setId(memeId, memeUrl) {
-    this.setState({
-      mainMemeId: memeId,
-      resetMemeUrl: memeUrl
-    })
-
-    if (this.state.loggedIn && (this.state.text0 || this.state.text1)) {
-      Imgflip.createMeme(this.state.username, this.state.password, memeId, this.state.text0, this.state.text1)
-      .then(createdMeme => {
-        this.selectMainMeme(createdMeme.data.url);
-      })
-    }
-  }
-  
-  displayInfo() {
-    if (this.state.loggedIn) {
-      return <InputField onTopCaptionChange={this.changeTopCaption} onBottomCaptionChange={this.changeBottomCaption} /> 
-    } else {
-      return <LogIn onUsernameChange={this.changeUsername} onPasswordChange={this.changePassword} logIn={this.logIn} />
-    }
-  }
-
   logIn() {
     if(!this.state.username || !this.state.password) {
       return alert('Please enter username and password')
@@ -82,6 +54,12 @@ export class App extends React.Component {
 
   }
 
+  changeMainMeme(memeUrl) {
+    this.setState({
+      mainMemeUrl: memeUrl,
+    })
+  }
+
   changeUsername(username) {
     this.setState({
       username: username
@@ -95,49 +73,67 @@ export class App extends React.Component {
   }
 
   changeTopCaption(topCaption) {
-      this.setState({
+    this.setState({
       text0: topCaption
     })
 
-    if (!topCaption && !this.state.text1) {
-      this.setState({
-        mainMemeUrl: this.state.resetMemeUrl
-      })
-      return;
-    }
-
-    Imgflip.createMeme(this.state.username, this.state.password, this.state.mainMemeId, topCaption, this.state.text1)
-    .then(createdMeme => {
-      this.selectMainMeme(createdMeme.data.url);
-    })
+    this.renderMainMeme(this.state.username, this.state.password, this.state.mainMemeId, topCaption, this.state.text1)
   }
 
   changeBottomCaption(bottomCaption) {
-      this.setState({
+    this.setState({
       text1: bottomCaption
     })
 
-    if (!bottomCaption && !this.state.text0) {
+    this.renderMainMeme(this.state.username, this.state.password, this.state.mainMemeId, this.state.text0, bottomCaption);
+  }
+
+  changeId(memeId) {
+    this.setState({
+      mainMemeId: memeId,
+
+    })
+
+    if (this.state.loggedIn && (this.state.text0 || this.state.text1)) {
+      this.renderMainMeme(this.state.username, this.state.password, memeId, this.state.text0, this.state.text1)
+    }
+  }
+
+  changeResetUrl(memeUrl) {
+    this.setState({
+      resetMemeUrl: memeUrl
+    })
+  }
+
+  renderMainMeme(username, password, id, text0, text1) {
+    if (!text0 && !text1) {
       this.setState({
         mainMemeUrl: this.state.resetMemeUrl
       })
       return;
     }
-
-    Imgflip.createMeme(this.state.username, this.state.password, this.state.mainMemeId, this.state.text0, bottomCaption)
+    Imgflip.createMeme(username, password, id, text0, text1)
     .then(createdMeme => {
-      this.selectMainMeme(createdMeme.data.url);
+      this.changeMainMeme(createdMeme.data.url);
     })
+  }
+
+  display() {
+    if (this.state.loggedIn) {
+      return <InputField onTopCaptionChange={this.changeTopCaption} onBottomCaptionChange={this.changeBottomCaption} /> 
+    } else {
+      return <LogIn onUsernameChange={this.changeUsername} onPasswordChange={this.changePassword} logIn={this.logIn} />
+    }
   }
 
   componentDidMount() {
     Imgflip.getMemes()
-    .then(memeResults => {
-      console.log(memeResults)
+    .then(memes => {
       this.setState({
-        memePhotos: memeResults,
-        mainMemeUrl: memeResults[0].url,
-        mainMemeId: memeResults[0].id
+        memes: memes,
+        mainMemeUrl: memes[0].url,
+        mainMemeId: memes[0].id,
+        resetMemeUrl: memes[0].url
       })
     })
   }
@@ -147,12 +143,12 @@ export class App extends React.Component {
       <div className="App">
         <img alt='imperativethanelogo' className="header"/>
           <div className="main-container">
-          <MemeCarousel memePhotos={this.state.memePhotos} selectMeme={this.selectMainMeme} setId={this.setId} />
+          <MemeCarousel memes={this.state.memes} onMainMemeChange={this.changeMainMeme} onIdChange={this.changeId} onResetUrlChange={this.changeResetUrl} />
           <div className="main-meme-container">
             <MainDisplay memeUrl={this.state.mainMemeUrl}/>
             <MainUrl memeUrl={this.state.mainMemeUrl}/>
           </div>
-          {this.displayInfo()}
+          {this.display()}
         </div>
         <Footer />
       </div>

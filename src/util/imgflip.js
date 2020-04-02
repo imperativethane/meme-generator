@@ -17,20 +17,9 @@ export const Imgflip = {
     },
 
     createMeme(username, password, id, topCaption, bottomCaption) {
-        if (typeof username !== 'string' || typeof password !== 'string') {
-            return;
-        }
-
-        const url=`https://api.imgflip.com/caption_image?username=${username}&password=${password}`;
-        
-        const template_id = () => {
-            if (id) {
-                return `&template_id=${id}`
-            } else {
-                return ''
-            }
-        }   
-                   
+        //Create the URL string
+        const url=`https://api.imgflip.com/caption_image?username=${username}&password=${password}&template_id=${id}`;
+                 
         const text0 = () => {
             if (topCaption) {
                 return `&text0=${topCaption}`
@@ -47,14 +36,13 @@ export const Imgflip = {
             }
         }
 
-        const address = url + template_id() + text0() + text1();
-        console.log(address);
+        const address = url + text0() + text1();
 
+        //Sennd POST Request
         return fetch(address, {
             method: 'POST'
         })
         .then(response => {
-            console.log(response)
             return response.json();
         })
         .then(jsonResponse => {

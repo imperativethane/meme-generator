@@ -5,10 +5,9 @@
     justify-content: center;
 }
 
-.content {
+.content-container {
     background-color: rgba(187, 235, 255, 0.5);
     height: 494px;
-    
 }
 
 

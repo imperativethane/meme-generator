@@ -21,7 +21,7 @@ export class InputField extends React.Component {
   render() {
         return (
             <div className="input-field">
-                <div className="content">
+                <div className="content-container">
                     <h2>User Verified!</h2>
                     <h1>Hi imperativethane</h1>
                     <h2>Fill out the text for your meme</h2>
